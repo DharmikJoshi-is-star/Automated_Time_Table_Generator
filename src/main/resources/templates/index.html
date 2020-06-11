@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body ng-app = "mainApp" ng-controller = "appController"> 
+<!-- All the part of bosy is available to app.js -->
+<h3>this part is for form using angular template</h3>
+<button ng-click="showForm=!showForm">show form</button>
+<div class="container" ng-show="showForm">
+	
+	<span>id: </span>
+	<input type="text" ng-model="newData.id">
+	<br>
+
+	<span>name: </span>
+	<input type="text" ng-model="newData.name">
+	<br>
+
+	<span>salary: </span>
+	<input type="text" ng-model="newData.salary">
+	<br>
+
+	<pre>
+	{{ newData }}
+	</pre>
+
+</div>
+
+<br>
+<input type="text" placeholder="leave a message" ng-model="inputMessage" >
+<h2>{{ inputMessage }}</h2>
+
+
+<h1>{{hello }}</h1>
+<button ng-click = "sayHello()">Say Hello</button>
+<br>
+<button ng-click = "showMessage=true">show message</button>
+<button ng-click = "showMessage=false">show message</button>
+<br>
+<button ng-click = "showMessage=!showMessage">Toggle message</button>
+
+<h2 ng-show="showMessage == true">Secret Message</h2>
+
+<div class="well" ng-repeat="data in lists">
+<hr>
+	<strong>id: {{ data.id }}</strong>
+	<br>
+	<strong>name: {{ data.name }}</strong>
+	<br>
+	<strong>salary: {{ data.salary | currency }}</strong>
+</div>
+
+<div class="well" ng-repeat="data in listFromJson">
+<hr>
+	<strong>id: {{ data.id }}</strong>
+	<br>
+	<strong>name: {{ data.name }}</strong>
+	<br>
+	<strong>salary: {{ data.salary | currency }}</strong>
+</div>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.6/ui-bootstrap.min.js" integrity="sha256-TpTu69CW5jM9qpem7jPfng/CZR+59AwHskHly77qoek=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.6/ui-bootstrap-tpls.min.js" integrity="sha256-amMx0TdPrt/lhuJLvA9HfTi1Vl7985tYQ7RV7bpNYVM=" crossorigin="anonymous"></script>
+<script src="angularjs/app.js"></script>
+<script src="angularjs/controller/appController.js"></script>
+<script src="angularjs/controller/factory.js"></script>
+</html>
