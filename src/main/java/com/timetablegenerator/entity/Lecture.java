@@ -1,6 +1,7 @@
 package com.timetablegenerator.entity;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.persistence.Entity;
 
@@ -31,6 +32,8 @@ public class Lecture {
 
 	private HashMap<Practical, Batch> practicalBatchWise;
 	
+	private List<Practical> practicals;
+	
 	public Lecture(Integer lectureNo, String lectureSession, String lectureHour, String lectureDay, String timming) {
 		super();
 		this.lectureNo = lectureNo;
@@ -51,6 +54,22 @@ public class Lecture {
 		this.lectureHour = lectureHour;
 		this.lectureDay = lectureDay;
 		this.timming = timming;
+	}
+
+	public List<Practical> getPracticals() {
+		return practicals;
+	}
+
+	public void setPracticals(List<Practical> practicals) {
+		this.practicals = practicals;
+	}
+
+	public void setSubject(boolean isSubject) {
+		this.isSubject = isSubject;
+	}
+
+	public void setBatchPractical(boolean isBatchPractical) {
+		this.isBatchPractical = isBatchPractical;
 	}
 
 	public Lecture() {

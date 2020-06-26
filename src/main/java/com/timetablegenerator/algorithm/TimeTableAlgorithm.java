@@ -22,7 +22,7 @@ import com.timetablegenerator.enums.PreferredSession;
 @Component
 public class TimeTableAlgorithm {
 
-	@Autowired
+	@Autowired        
 	TimeTableAlgorithmService timeTableAlgorithmService;
 	
 	final Integer TOTAL_NO_OF_DAYS = 5;
@@ -104,12 +104,8 @@ public class TimeTableAlgorithm {
 		
 		timeTableAlgorithmService.getStreamStandard(new Long("188"));
 
-		
-
 		final Integer TOTAL_NO_OF_STREAMS = timeTableAlgorithmService.streams.length;
 
-		
-		
 		/*
 		 * Days
 		 * |
@@ -127,32 +123,15 @@ public class TimeTableAlgorithm {
 				lectures[i][j] = new Lecture[timeTableAlgorithmService.streamStandards[i].length][TOTAL_NO_OF_LECTURES_IN_DAY];
 			}
 		}
-		/*
-		System.out.println("total Days: "+lectures.length);
-		System.out.println("total streams: "+lectures[0].length);
-		System.out.println("total courses/years: "+lectures[0][0].length);
-		System.out.println("total lectures: "+lectures[0][0][0].length);
-		*/
+		
 		setUpPreLectureDetails();
-		/*
-		setSubjectListForStreamStandard(0,0,PreferredSession.Morning.toString()).forEach((subject)->{
-			System.out.println(subject.getName()+"--"+subject.getPreferredSession()+"--"+subject.getSessionHours());
-		});
-		*/
 		
 		timeTableAlgorithmService.getStreamStandardPracticalArray(new Long("188"));
-		
-		
 
 		addPracticalToTimeTable();
-		
 	
 		//from the below program we will start add Subejcts to the timeTable
 		timeTableAlgorithmService.getStreamStandardSubjectArray(new Long("188"));
-		
-		
-		boolean isBreak = false;
-		int startFromStandard = 0;
 		
 		int countTheCall = 0;
 		
@@ -164,11 +143,9 @@ public class TimeTableAlgorithm {
 					
 					for (int standard = 0; standard < lectures[day][stream].length; standard++) {
 			
-					
 						Lecture setUplecture = lectures[day][stream][standard][lecture];
 						
-						if(setUplecture.getPractical()!=null || setUplecture.getPracticalBatchWise()!=null)
-							continue;
+						if(setUplecture.getPractical()!=null || setUplecture.getPracticalBatchWise()!=null)	continue;
 						
 						List<Subject> subjectList = setSubjectListForStreamStandard(stream, standard, setUplecture.getLectureSession());
 						List<Faculty> facultyTeachesSubjectList = setFacultyTeachesSubjectList(stream, standard, subjectList);				
@@ -177,18 +154,12 @@ public class TimeTableAlgorithm {
 						facultyTeachesSubjectList = removeFacultyIfBusyFrom_subjectList_facultyTeachesSubjectList(subjectList, facultyTeachesSubjectList, tempFacultyToRemove);
 						
 						
-							if(subjectList.size()==0) {
-								
-								continue;
-							}
+							if(subjectList.size()==0)	continue;
+							
 						
-							if(checkIfAllSubjectsAreFinished(subjectList)) {
-
-								continue;
-							}
+							if(checkIfAllSubjectsAreFinished(subjectList))	continue;
 						
 							Subject selectedSubject = selectTheSubject(subjectList, null);
-							
 							
 							if( checkIfSelectedSubjectIsNotRepeatedTwiceInADay(day, stream, standard, lecture, selectedSubject) ) {
 								
@@ -211,8 +182,6 @@ public class TimeTableAlgorithm {
 									}
 								}
 								
-								
-								
 							}
 							
 							decreaseTheSessionByAnHour(stream, standard, selectedSubject, oneLectureHrs);
@@ -227,25 +196,7 @@ public class TimeTableAlgorithm {
 				}
 			}
 		}
-		
-		/*
-		System.out.println("count the call: "+countTheCall);
-		
-		for (int day = 0; day < TOTAL_NO_OF_DAYS; day++) {
-			for (int stream = 0; stream < lectures[day].length; stream++) {
-				for (int standard = 0; standard < lectures[day][stream].length; standard++) {
-					System.out.println("------------for Stream: "+timeTableAlgorithmService.streams[stream].getName()+" & year: "+timeTableAlgorithmService.streamStandards[stream][standard].getName()+"---------------------");
-					for (int lecture = 0; lecture < lectures[day][stream][standard].length; lecture++) {
-						if(lectures[day][stream][standard][lecture].getSubject()!=null)
-							System.out.println("Lecture "+(lecture+1)+" : "+lectures[day][stream][standard][lecture].getSubject().getName()+"--Lecture session: "+lectures[day][stream][standard][lecture].getLectureSession()+"--Subject session: "+lectures[day][stream][standard][lecture].getSubject().getPreferredSession());
-						else
-							System.out.println("Lecture "+(lecture+1)+" : "+lectures[day][stream][standard][lecture].getSubject()+"--Lecture session: "+lectures[day][stream][standard][lecture].getLectureSession()+"--Subject session: "+lectures[day][stream][standard][lecture].getSubject());
-						
-					}
-					System.out.println("----------------------------------");
-				}
-			}
-		}  */
+	
 		countTheCall = 0;
 		for (int i = 0; i <timeTableAlgorithmService.subjects.length; i++) {
 			for (int j = 0; j < timeTableAlgorithmService.subjects[i].length; j++) {
@@ -258,10 +209,7 @@ public class TimeTableAlgorithm {
 		
 		System.out.println("count for the subject is session is empty: "+countTheCall);
 		
-		
 		printTheTable();
-		
-		
 		
 	}
 	
@@ -949,6 +897,106 @@ public class TimeTableAlgorithm {
 		}
 		
 		return subjectList;
+	}
+
+	public Lecture[][][][] generateTimeTableForCollege(Long collegeId) {
+		
+
+		timeTableAlgorithmService.getStreamStandard(collegeId);
+
+		final Integer TOTAL_NO_OF_STREAMS = timeTableAlgorithmService.streams.length;
+
+		/*
+		 * Days
+		 * |
+		 * --streams (in a single day there are n no of streams)
+		 * 	 |
+		 * 	 --courses(stream_years) (in a single stream there are m no of courses/standard/years)
+		 * 	   |
+		 * 	   --lectures (in a single courses/standard/years there are k no of lectures taken )
+		 * 
+		 */
+		lectures= new Lecture[TOTAL_NO_OF_DAYS][TOTAL_NO_OF_STREAMS][][];
+
+		for (int i = 0; i < TOTAL_NO_OF_DAYS; i++) {
+			for (int j = 0; j < timeTableAlgorithmService.streams.length; j++) {
+				lectures[i][j] = new Lecture[timeTableAlgorithmService.streamStandards[i].length][TOTAL_NO_OF_LECTURES_IN_DAY];
+			}
+		}
+		
+		setUpPreLectureDetails();
+		
+		timeTableAlgorithmService.getStreamStandardPracticalArray(new Long("188"));
+
+		addPracticalToTimeTable();
+	
+		//from the below program we will start add Subejcts to the timeTable
+		timeTableAlgorithmService.getStreamStandardSubjectArray(new Long("188"));
+		
+		int countTheCall = 0;
+		
+		for (int day = 0; day < TOTAL_NO_OF_DAYS; day++) {
+			
+			for (int lecture = 0; lecture < TOTAL_NO_OF_LECTURES_IN_DAY; lecture++) {
+				
+				for (int stream = 0; stream < lectures[day].length; stream++) {
+					
+					for (int standard = 0; standard < lectures[day][stream].length; standard++) {
+			
+						Lecture setUplecture = lectures[day][stream][standard][lecture];
+						
+						if(setUplecture.getPractical()!=null || setUplecture.getPracticalBatchWise()!=null)	continue;
+						
+						List<Subject> subjectList = setSubjectListForStreamStandard(stream, standard, setUplecture.getLectureSession());
+						List<Faculty> facultyTeachesSubjectList = setFacultyTeachesSubjectList(stream, standard, subjectList);				
+						List<Faculty> tempFacultyToRemove = setTempFacultyToRemove(day, lecture);
+			 			
+						facultyTeachesSubjectList = removeFacultyIfBusyFrom_subjectList_facultyTeachesSubjectList(subjectList, facultyTeachesSubjectList, tempFacultyToRemove);
+						
+						
+							if(subjectList.size()==0)	continue;
+							
+						
+							if(checkIfAllSubjectsAreFinished(subjectList))	continue;
+						
+							Subject selectedSubject = selectTheSubject(subjectList, null);
+							
+							if( checkIfSelectedSubjectIsNotRepeatedTwiceInADay(day, stream, standard, lecture, selectedSubject) ) {
+								
+								if(!subjectListHaveOnlyOneSubjectLeft(subjectList)) {
+									
+									selectedSubject = selectTheSubject(subjectList, selectedSubject);
+									if(selectedSubject==null)
+										continue;
+									countTheCall++;	
+									
+								}else {
+									
+									if(checkIfSelectSubjectIsRepeatedConsecutively(day, stream, standard, lecture, selectedSubject)) {
+										
+										selectedSubject = selectTheSubject(subjectList, selectedSubject);
+										if(selectedSubject==null)
+											continue;
+										countTheCall++;	
+										
+									}
+								}
+								
+							}
+							
+							decreaseTheSessionByAnHour(stream, standard, selectedSubject, oneLectureHrs);
+		
+							setUplecture.setIsSubject(true);
+							setUplecture.setSubject( new Subject(selectedSubject) );
+							setUplecture.setFaculty( new Faculty(selectedSubject.getFaculty()) );
+		
+							lectures[day][stream][standard][lecture] = setUplecture;					  
+					}
+				}
+			}
+		}
+	
+		return lectures;
 	}
 	
 }

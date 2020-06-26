@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Time-Table-Generator</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+</head>
+<body ng-app = "mainApp" ng-controller = "timeTableGeneratorController">
+
+	<div class="container">
+		<div class="page-header">
+    		<h1 id="header">GENERATE TIMETABLE</h1>
+    	</div>
+    	
+    	<div class="well">
+    		<strong>College Name:</strong>
+    		 {{ college.name }}
+    		 <br>
+    		 
+    		<strong>Total Number Of streams are :</strong>
+    		 {{ college.streams.length }}
+    		 <br>
+    		 
+    		<strong>Total Number Of Faculties are :</strong>
+    		{{ college.faculties.length }}
+    		<br>
+    		 
+    		<h4>Enter below details and create a time table: </h4>
+    		 <br>
+    		 
+    		 <form>
+    		 	<div class="form-group">
+			    <select class="custom-select" ng-model="practical.preferredSession" >
+			      <option value="">Select session</option>
+			      <option value="Morning">Morning</option>
+			      <option value="Noon">Noon</option>
+			      <option value="Afternoon">Afternoon</option>
+			      <option value="Evening">Evening</option>
+			      <option value="Night">Night</option>
+			    </select>
+			    </div>
+    		 </form>
+    		 
+    		 <button type="submit" class="btn btn-primary" ng-click="generateTable()">Generate</button>
+    		 
+    		 <br>
+    		 
+    		  <small id="filedMsg" class="form-text text-muted">
+    		  	Time table generated successfully.
+    		  	<br>
+    		  	Select stream and lectures to view the table
+    		  </small>
+    		 
+    		  <form>
+    		 	<div class="form-group">
+			    <select class="custom-select" ng-model="query.stream" >
+			    	
+			    	
+			    	<option ng-repeat="stream in college.streams"
+					        value="{{$index}}">
+					  {{ stream.name }}
+					</option>
+			     
+			    </select>
+			    </div>
+			    
+			    <pre>
+			    	{{ query.stream }}
+			    </pre>
+			    
+			    
+			     <div ng-if="query.stream" class="form-group" >
+			     
+			     		<div ng-repeat="stream in college.streams" ng-if="$index==query.stream">
+			    			
+			    			<select class="custom-select"  ng-model="query.standard" >
+				    	
+						    	<option ng-repeat="standard in stream.standards"
+								        value="{{$index}}">
+								  {{ standard.name }}
+								</option>
+						     
+						    </select>
+			    			
+			    			 <pre>
+						    	{{ query.standard }}
+						    </pre>
+			    			
+			    		</div>
+			     </div>
+			    
+			   
+			
+			    
+    		 </form>
+    		 
+    		 	
+	    		 <div class="well" ng-repeat="day in timetable">
+	    		 	<strong>
+	    		 		Day no : {{ $index+1 }}
+	    		 	</strong>
+	    		 	 <div class="well" ng-repeat="stream in day">
+	    		 	 	 <div class="well" ng-repeat="standard in stream" ng-if="$index==query.stream">
+	    		 	 	 	<div class="well" ng-repeat="lecture in standard" ng-if="$index==query.standard">
+	    		 	 	 		
+		    		 	 	 			<ul>
+		    		 	 	 			<li>
+		    		 	 	 				
+		    		 	 	 				Lecture no: {{ $index+1 }}
+		    		 	 	 				<br>
+		    		 	 	 				
+		    		 	 	 					Subject Name: {{ lecture.isSubject }} 
+		    		 	 	 				
+		    		 	 	 			</li>
+		    		 	 	 			</ul>
+	    		 	 	 		
+	    		 	 		</div>
+	    		 		</div>
+	    		 	</div>
+	    		 	
+	    		 </div>
+    		 	
+    		 
+    		 
+    	</div>
+    	
+    	
+	</div>
+	
+		
+	<br>
+    <a class="dropdown-item" href="college.html">Go to college</a>
+
+  
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.6/ui-bootstrap.min.js" integrity="sha256-TpTu69CW5jM9qpem7jPfng/CZR+59AwHskHly77qoek=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.6/ui-bootstrap-tpls.min.js" integrity="sha256-amMx0TdPrt/lhuJLvA9HfTi1Vl7985tYQ7RV7bpNYVM=" crossorigin="anonymous"></script>
+
+
+<script src="angularjs/app.js"></script>
+<script src="angularjs/controller/timeTableGeneratorController.js"></script>
+<script src="angularjs/controller/factory.js"></script>
+</html>

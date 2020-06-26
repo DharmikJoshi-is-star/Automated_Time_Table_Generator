@@ -21,5 +21,11 @@ public class TestController {
 		
 		return "addCollege";
 	}
+	
+	@RequestMapping("/timetable")
+	public String timetable(ModelAndView mav) {
+		
+		return "timetable";
+	}
 }
                     

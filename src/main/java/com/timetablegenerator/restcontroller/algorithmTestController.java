@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.timetablegenerator.algorithm.TimeTableAlgorithm;
+import com.timetablegenerator.entity.College;
 
 @RestController
 public class algorithmTestController {
@@ -13,11 +14,11 @@ public class algorithmTestController {
 	TimeTableAlgorithm timeTableAlgorithm;
 
 	@GetMapping("/testComponent")
-	public String testComponent() {
+	public College testComponent() {
 		//System.out.println(collegeService.getCollegeWithId(new Long("188")).getName());;
-		timeTableAlgorithm.createTable();
+		
 		//timeTableAlgorithm.addPracticalToTimeTable();
 		///ttas.getStreamStandardSubjectArray();
-		return "done";
+		return new College("Dharmik joshi");
 	}
 }

@@ -59,6 +59,9 @@ public class Practical {
 	@Getter @Setter
 	private HashMap<Batch, Boolean> batches;
 	
+	@Transient
+	private Batch batch;
+	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "standard_id")
 	@Getter @Setter
@@ -90,6 +93,8 @@ public class Practical {
 		// TODO Auto-generated constructor stub
 	}
 
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -183,6 +188,16 @@ public class Practical {
 
 	public void setBatches(HashMap<Batch, Boolean> batches) {
 		this.batches = batches;
+	}
+
+	
+	
+	public Batch getBatch() {
+		return batch;
+	}
+
+	public void setBatch(Batch batch) {
+		this.batch = batch;
 	}
 
 	public Practical[] sortAccordingToPreferredSession(Practical[] practicalArr, String prioritySession) {

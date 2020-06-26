@@ -1,5 +1,6 @@
 package com.timetablegenerator.algorithm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +9,12 @@ import org.springframework.stereotype.Component;
 import com.timetablegenerator.entity.Batch;
 import com.timetablegenerator.entity.College;
 import com.timetablegenerator.entity.Faculty;
+import com.timetablegenerator.entity.Lecture;
 import com.timetablegenerator.entity.Practical;
 import com.timetablegenerator.entity.Stream;
 import com.timetablegenerator.entity.StreamStandard;
 import com.timetablegenerator.entity.Subject;
+import com.timetablegenerator.entity.TimeTable;
 import com.timetablegenerator.service.CollegeService;
 
 @Component
@@ -224,7 +227,83 @@ public class TimeTableAlgorithmService {
 		
 		
 	}
+
+
+	public TimeTable cleanTheTimeTable(TimeTable timeTable) {
+		
+		Lecture[][][][] lectures = timeTable.getLectures();
 	
+		for (int day = 0; day < lectures.length; day++) {
+			for (int stream = 0; stream < lectures[day].length; stream++) {
+				for (int standard = 0; standard < lectures[day][stream].length; standard++) {
+					for (int lecture = 0; lecture < lectures[day][stream][standard].length; lecture++) {
+						
+						Lecture thisLecture = lectures[day][stream][standard][lecture];
+						
+						if(thisLecture.getFaculty()!=null) {
+							thisLecture.setFaculty(cleanFaculty(thisLecture.getFaculty()));
+						}
+						
+						if(thisLecture.getSubject()!=null) {
+							Subject subject = thisLecture.getSubject();
+							
+							subject.setFaculty(cleanFaculty(subject.getFaculty()));
+							subject.setStreamStandard(null);
+							
+							thisLecture.setSubject(subject);
+						}
+						
+						if(thisLecture.getPractical()!=null) {
+							Practical practical = thisLecture.getPractical();
+							
+							practical.setFaculty(cleanFaculty(practical.getFaculty()));
+							practical.setStreamStandard(null);
+							
+							practical.setBatches(null);
+						}
+						
+						if(thisLecture.getPracticalBatchWise()!=null) {
+							
+							if(thisLecture.getPracticals()==null) {
+								thisLecture.setPracticals(new ArrayList<Practical>());
+							}
+							
+							thisLecture.getPracticalBatchWise().keySet().forEach(practical->{
+								
+								practical.setFaculty(cleanFaculty(practical.getFaculty()));
+								practical.setStreamStandard(null);
+								
+								practical.setBatches(null);
+								
+								thisLecture.getPracticalBatchWise().get(practical).setStreamStandard(null);
+								
+								practical.setBatch(thisLecture.getPracticalBatchWise().get(practical));
+								
+								thisLecture.getPracticals().add(practical);
+							});
+						}
+						
+					
+												
+					}
+				}
+			}
+		}
+		
+		timeTable.setLectures(lectures);
+		
+		return timeTable;
+		
+	}
+	
+	public Faculty cleanFaculty(Faculty faculty) {
+		if(faculty!=null) {
+			faculty.setCollege(null);
+			faculty.setSubjects(null);
+			faculty.setPracticals(null);
+		}
+		return faculty;
+	}
 	
 	
 }
