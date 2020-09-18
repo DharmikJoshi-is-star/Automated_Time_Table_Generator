@@ -6,3 +6,9 @@ Frontend of this project: <a href="https://github.com/DharmikJoshi-is-star/Autom
 
 Demo Link of this Project: <a href="https://www.youtube.com/watch?v=rYfbjqZd7Mg&t=22s">https://www.youtube.com/watch?v=rYfbjqZd7Mg&t=22s</a>
 <br>
+
+
+![Screenshot (275)](https://user-images.githubusercontent.com/51437729/93594409-6704b980-f9d3-11ea-96e4-1091ded08195.png)
+![Screenshot (272)](https://user-images.githubusercontent.com/51437729/93594392-5eac7e80-f9d3-11ea-836e-aa25f033f8a8.png)
+![Screenshot (274)](https://user-images.githubusercontent.com/51437729/93594401-62400580-f9d3-11ea-8b60-82612e41519e.png)
+![Screenshot (273)](https://user-images.githubusercontent.com/51437729/93594403-6409c900-f9d3-11ea-9149-5089c1ed2634.png)
